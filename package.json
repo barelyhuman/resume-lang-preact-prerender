@@ -1,0 +1,33 @@
+{
+  "name": "resume-lang-prevpress",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node build.js -w",
+    "build": "node build.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@barelyhuman/resume-lang": "npm:@jsr/barelyhuman__resume-lang@^0.0.1",
+    "preact": "^10.24.3",
+    "preact-render-to-string": "^6.5.11"
+  },
+  "devDependencies": {
+    "@mdx-js/esbuild": "^3.1.0",
+    "@tailwindcss/typography": "^0.5.15",
+    "@unocss/core": "^0.64.1",
+    "@unocss/preset-uno": "^0.64.1",
+    "@unocss/preset-wind": "^0.64.1",
+    "autoprefixer": "^10.4.20",
+    "esbuild": "^0.24.0",
+    "esbuild-postcss": "^0.0.4",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.15",
+    "tempura": "^0.4.1",
+    "tiny-glob": "^0.2.9"
+  }
+}

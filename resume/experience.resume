@@ -1,0 +1,77 @@
+section Experience
+    section NearForm
+        group 
+            label position: Senior Software Developer
+            group
+                label startDate: Jan, 2024
+                label endDate: Present
+            end
+        end
+        group
+            text: 
+- Achieve 8ms response times for a hard constraint based search system based on Redis
+- Optimize CI and Dev tooling to increase the development feedback cycle by 30%
+- Contributed to fastify, mercurius and other OSS projects
+            end
+        end
+    end
+
+    section Fountane
+        group 
+            label position: Principal Developer
+            group
+                label startDate: Jul, 2020 
+                label endDate: Jan, 2024
+            end
+        end
+        group
+                text: 
+- Led and built ComplyIQ and it's tax management platform for the American Clientele to increase tax filing accuracy
+- Built the impoweredTeam (https://www.impoweredteam.com) iOS and Android app and it's architecture to help caretakers and caregivers find each other
+                end
+        end
+        group
+            label position: Full Stack Developer
+            group
+                label startDate: Nov, 2019
+                label endDate: Jul, 2020
+            end
+        end
+        group
+            text:
+- Built Parkpoolr(http://parkpoolr.com) from MVP to acquisition, a product for customers to book parking spaces with per-minute accuracy and for hosts to be able to manage and flexibly change the fare
+- Provided technical guidance and simplified deployments for multiple small-scale apps and startups
+            end
+        end
+    end
+
+    section Valuefy
+        group
+            label position: Full Stack Developer
+            group
+                label startDate: Sep, 2018 
+                label endDate: Oct, 2019
+            end
+        end
+    end
+
+    section Cartisan
+        group
+            label position: Software Developer
+            group
+                label startDate: Apr, 2018 
+                label endDate: Sep, 2018
+            end
+        end
+    end
+
+    section RetailIO
+        group
+            label position: Front end Developer
+            group
+                label startDate: Aug, 2017
+                label endDate: Dec, 2017
+            end
+        end
+    end
+end

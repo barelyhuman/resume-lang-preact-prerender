@@ -1,0 +1,11 @@
+section Education
+    section Swami Vivekananda Institute of Technology
+        group
+            label course: Bachelor of Technology
+            group
+                label startDate: Dec, 2013
+                label endDate: Dec, 2017
+            end
+        end
+    end
+end

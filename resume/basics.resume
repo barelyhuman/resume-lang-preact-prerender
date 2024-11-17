@@ -1,0 +1,23 @@
+section Basics
+    label name: "Siddharth Gelera"
+    group
+        label email: url "ahoy@barleyhuman.dev" "mailto:ahoy@barleyhuman.dev"
+        label mobile: +919885317891
+        label location: Hyderabad, In
+        label site: url "http://reaper.is"
+    end
+end
+
+section Summary
+    label summary: "Full Stack Developer • Minimalist • OSS Fanatic"
+end
+
+section Skills 
+    text summary: 
+- **Web Development**: Javascript/Typescript, (P)React, Vue, RiotJS, CSS, CSS3, HTML, HTML5
+- **Software Development**: DevOps, Docker, Automation, Version Management, Data Structures, SOLID
+- **Backend/BackOffice Development**: Express, Fastify, Loopback.io, Node.JS, Deno, Go Lang
+- **App Development**: React Native, NativeScript, Swift
+- **Database**: SQL, No-SQL, ACID, Normalisation, Views, Stored Procedures, Distributed Databases, Shards, Foreign Data Wrappers
+    end
+end

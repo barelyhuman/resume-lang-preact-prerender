@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind utilities;
+@tailwind components;
+
+#app {
+  @apply p-2;
+}
+
+section[data-resume-id] {
+  @apply mt-4;
+}
+
+section [data-resume-id] > a {
+  @apply text-gray-600 underline underline-offset-4 hover:text-gray-800;
+}
+
+section > [data-resume-id] p {
+  @apply inline-block;
+}
+
+[data-resume-id="name"] {
+  @apply w-full font-semibold text-center text-gray-700;
+}
+
+[data-resume-id="name"] p {
+  @apply !mt-0 !mb-0;
+}
+
+section[data-resume-id="Basics"] > h1 {
+  display: none;
+}
+
+section[data-resume-id="Basics"] {
+  @apply flex gap-2 justify-center items-center text-sm;
+}
+
+section[data-resume-id="Basics"] > [data-resume-type="group"] {
+  @apply flex gap-2 justify-center;
+}
+
+section[data-resume-id="Basics"] > [data-resume-type="group"] > div {
+  @apply inline-flex flex-nowrap;
+}
+
+section[data-resume-id="Basics"]
+  > [data-resume-type="group"]
+  > div:not(:last-child)::after {
+  @apply mx-2 text-gray-400;
+  content: "|";
+}
+
+section[data-resume-id] > h1 {
+  @apply p-0 m-0 text-lg font-semibold;
+}
+
+section[data-resume-id] > h2 {
+  @apply p-0 m-0 text-base font-semibold;
+}
+
+[data-resume-id="position"] > p,
+[data-resume-id="course"] > p,
+[data-resume-id="startDate"] > p,
+[data-resume-id="endDate"] > p {
+  @apply p-0 text-xs;
+}
+
+[data-resume-type="group"] {
+  @apply inline-flex;
+}
+
+[data-resume-type="group"]:has([data-resume-id="startDate"]) {
+  @apply justify-between;
+}
+
+section {
+  @apply flex flex-col gap-2 p-0 m-0;
+}
+
+[data-resume-id="endDate"] > p::before {
+  content: "-";
+  @apply mx-2;
+}
+
+[data-resume-type="rich-text"] > .prose {
+  font-size: 14px;
+}
