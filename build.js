@@ -1,39 +1,14 @@
 import { parse } from "@barelyhuman/resume-lang";
+import chokidar from "chokidar";
 import { build } from "esbuild";
 import postcss from "esbuild-postcss";
 import fs from "node:fs";
+import { join, resolve } from "node:path";
 import { dirname } from "path";
 import { h } from "preact";
 import renderToString from "preact-render-to-string";
-import { join, resolve } from "node:path";
 import { compile } from "tempura";
 import glob from "tiny-glob";
-
-const entryPoints = await glob("./content/**/*.{jsx,ts,js}", {
-  filesOnly: true,
-});
-
-/**
- * convert files into html
- * involve preact if need to pre-render
- * allow importing `.resume` files as JSON files
- */
-const compiledBuildOutput = await build({
-  entryPoints: entryPoints,
-  platform: "browser",
-  outdir: ".tmp-dist",
-  bundle: true,
-  splitting: true,
-  treeShaking: true,
-  format: "esm",
-  loader: {
-    ".js": "jsx",
-  },
-  metafile: true,
-  jsx: "automatic",
-  jsxImportSource: "preact",
-  plugins: [resumeLang(), postcss()],
-});
 
 function resumeLang() {
   return {
@@ -75,30 +50,80 @@ function resumeLang() {
   };
 }
 
-const template = await fs.promises.readFile("index.html", "utf8");
-const compiledTemplate = compile(template);
+async function buildFiles() {
+  const entryPoints = await glob("./content/**/*.{jsx,ts,js}", {
+    filesOnly: true,
+  });
+  /**
+   * convert files into html
+   * involve preact if need to pre-render
+   * allow importing `.resume` files as JSON files
+   */
+  const output = await build({
+    entryPoints: entryPoints,
+    platform: "browser",
+    outdir: ".tmp-dist",
+    bundle: true,
+    splitting: true,
+    treeShaking: true,
+    format: "esm",
+    loader: {
+      ".js": "jsx",
+    },
+    metafile: true,
+    jsx: "automatic",
+    jsxImportSource: "preact",
+    plugins: [resumeLang(), postcss()],
+  });
 
-const preRenderPromises = entryPoints.map(async (file) => {
-  const reCompiledEntry = Object.keys(
-    compiledBuildOutput.metafile.outputs
-  ).find((d) => compiledBuildOutput.metafile.outputs[d].entryPoint === file);
+  return {
+    output,
+    entryPoints,
+  };
+}
 
-  const cssBundle =
-    compiledBuildOutput.metafile.outputs[reCompiledEntry].cssBundle;
-  const module = await import(resolve(reCompiledEntry));
-  const str = renderToString(h(module.default), {});
-  const outputPath = reCompiledEntry
-    .replace(/\.js$/, ".html")
-    .replace(/\.tmp-dist/, "dist");
-  await fs.promises.mkdir(dirname(outputPath), { recursive: true });
-  const cssBundleData = await fs.promises.readFile(cssBundle, "utf8");
-  const outputHTML = compiledTemplate({
-    head: `
+async function buildStart() {
+  const { output: compiledBuildOutput, entryPoints } = await buildFiles();
+
+  const template = await fs.promises.readFile("index.html", "utf8");
+  const compiledTemplate = compile(template);
+
+  const preRenderPromises = entryPoints.map(async (file) => {
+    const reCompiledEntry = Object.keys(
+      compiledBuildOutput.metafile.outputs
+    ).find((d) => compiledBuildOutput.metafile.outputs[d].entryPoint === file);
+
+    const cssBundle =
+      compiledBuildOutput.metafile.outputs[reCompiledEntry].cssBundle;
+    const module = await import(resolve(reCompiledEntry));
+    const str = renderToString(h(module.default), {});
+    const outputPath = reCompiledEntry
+      .replace(/\.js$/, ".html")
+      .replace(/\.tmp-dist/, "dist");
+    await fs.promises.mkdir(dirname(outputPath), { recursive: true });
+    const cssBundleData = await fs.promises.readFile(cssBundle, "utf8");
+    const outputHTML = compiledTemplate({
+      head: `
       <style>${cssBundleData}</style>
     `,
-    content: str,
+      content: str,
+    });
+    await fs.promises.writeFile(outputPath, outputHTML, "utf8");
   });
-  await fs.promises.writeFile(outputPath, outputHTML, "utf8");
-});
 
-await Promise.all(preRenderPromises);
+  await Promise.all(preRenderPromises);
+}
+
+(async function main() {
+  const args = process.argv.slice(2);
+  const isDev = args.includes("-w");
+  await buildStart();
+  if (isDev) {
+    const watcher = chokidar.watch(".", { ignoreInitial: true });
+    watcher.on("change", async () => {
+      await buildStart();
+    });
+  } else {
+    process.exit(0);
+  }
+})();
