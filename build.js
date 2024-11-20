@@ -109,6 +109,7 @@ async function buildStart() {
       content: str,
     });
     await fs.promises.writeFile(outputPath, outputHTML, "utf8");
+    console.log(`Rendered: ${outputPath}`);
   });
 
   await Promise.all(preRenderPromises);
@@ -119,8 +120,12 @@ async function buildStart() {
   const isDev = args.includes("-w");
   await buildStart();
   if (isDev) {
-    const watcher = chokidar.watch(".", { ignoreInitial: true });
-    watcher.on("change", async () => {
+    const watcher = chokidar.watch(".", {
+      ignored: ["./dist", "./.tmp-dist"],
+      ignoreInitial: true,
+    });
+    watcher.on("change", async (changed) => {
+      console.log({ changed });
       await buildStart();
     });
   } else {
